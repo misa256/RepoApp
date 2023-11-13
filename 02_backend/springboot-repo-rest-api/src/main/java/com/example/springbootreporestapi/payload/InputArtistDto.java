@@ -4,13 +4,11 @@ import com.example.springbootreporestapi.entity.Report;
 import com.example.springbootreporestapi.entity.TalentAgency;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Set;
 
 @Data
-public class ArtistDto {
-    private long id;
+public class InputArtistDto {
     private String name;
-    private TalentAgency talentAgency;
+    private long talentAgencyId;
     private Set<Report> reports;
 }

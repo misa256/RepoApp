@@ -1,7 +1,10 @@
 package com.example.springbootreporestapi.controller;
 
 import com.example.springbootreporestapi.payload.ArtistDto;
+import com.example.springbootreporestapi.payload.ArtistResponse;
+import com.example.springbootreporestapi.payload.InputArtistDto;
 import com.example.springbootreporestapi.service.ArtistsService;
+import com.example.springbootreporestapi.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +19,13 @@ public class ArtistController {
     private ArtistsService artistsService;
 
     @GetMapping
-    public ResponseEntity<List<ArtistDto>> getAllArtist(){
-        return ResponseEntity.ok(artistsService.getAllArtists());
+    public ResponseEntity<ArtistResponse> getAllArtist(
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir
+    ){
+        return ResponseEntity.ok(artistsService.getAllArtists(pageNo, pageSize, sortBy, sortDir));
     }
 
     @GetMapping("/{id}")
@@ -25,16 +33,15 @@ public class ArtistController {
         return ResponseEntity.ok(artistsService.getArtist(id));
     }
 
-    @PostMapping("/{talentAgencyId}")
-    public ResponseEntity<ArtistDto> createArtist(@PathVariable(name = "talentAgencyId") Long talentAgencyId,
-                                                  @RequestBody ArtistDto artistDto){
-        return new ResponseEntity<>(artistsService.createArtist(talentAgencyId,artistDto), HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<ArtistDto> createArtist(@RequestBody InputArtistDto inputArtistDto){
+        return new ResponseEntity<>(artistsService.createArtist(inputArtistDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ArtistDto> updateArtist(@RequestBody ArtistDto artistDto,
+    public ResponseEntity<ArtistDto> updateArtist(@RequestBody InputArtistDto inputArtistDto,
                                                   @PathVariable(name = "id") Long id){
-        return new ResponseEntity<>(artistsService.updateArtist(artistDto,id),HttpStatus.OK);
+        return new ResponseEntity<>(artistsService.updateArtist(inputArtistDto,id),HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -43,10 +50,16 @@ public class ArtistController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ArtistDto> searchArtistByName(@RequestParam("name") String name){
-        return ResponseEntity.ok(artistsService.searchArtistByName(name));
+    public ResponseEntity<ArtistResponse> searchArtist(
+            @RequestParam("name") String name,
+            @RequestParam("agencyName") String agencyName,
+            @RequestParam("country") String country,
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir){
+        return ResponseEntity.ok(artistsService.searchArtist(name, agencyName, country, pageNo, pageSize, sortBy, sortDir));
     }
-
 
 
 
