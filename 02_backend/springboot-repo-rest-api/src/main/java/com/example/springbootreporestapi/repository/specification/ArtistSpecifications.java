@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ArtistSpecifications {
-
+//    ↓join使う時の参照用。でもエンティティを相互参照にしているのであれば、わざわざjoinしてやる必要がないと思う。。。
 //    public Specification<Artist> join(){
 //        return (root,query,builder) -> {
 //        root.fetch("talentAgency", JoinType.LEFT);

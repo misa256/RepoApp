@@ -10,5 +10,4 @@ import java.util.Set;
 public class InputArtistDto {
     private String name;
     private long talentAgencyId;
-    private Set<Report> reports;
 }

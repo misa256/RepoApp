@@ -95,7 +95,6 @@ public class ArtistsServiceImpl implements ArtistsService {
                 });
         artist.setName(inputArtistDto.getName());
         artist.setTalentAgency(talentAgency);
-        artist.setReports(inputArtistDto.getReports());
         Artist responseEntity = artistRepository.save(artist);
         return mapToDto(responseEntity);
     }
