@@ -86,11 +86,9 @@ public class ReportServiceImpl implements ReportService {
     }
 
 
-
     @Override
     public ReportDto updateReport(Long artistId, Long id, ReportDto reportDto) {
         Report report = checkArtistAndReport(artistId, id);
-
         report.setPlace(reportDto.getPlace());
         report.setDate(reportDto.getDate());
         report.setTitle(reportDto.getTitle());
