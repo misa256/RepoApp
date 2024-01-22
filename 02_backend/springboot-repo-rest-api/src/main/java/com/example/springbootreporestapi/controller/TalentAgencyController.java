@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/repo/agency")
 public class TalentAgencyController {
@@ -65,5 +67,15 @@ public class TalentAgencyController {
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir
     ){
         return ResponseEntity.ok(talentAgencyService.searchTalentAgency(agencyName, country, pageNo, pageSize, sortBy, sortDir));
+    }
+
+    @GetMapping("/getAgencyNames")
+    public ResponseEntity<List<String>> getAllAgencyNames(){
+        return ResponseEntity.ok(talentAgencyService.getAllAgencyName());
+    }
+
+    @GetMapping("/getAllCountries")
+    public ResponseEntity<List<String>> getAllCountries(){
+        return ResponseEntity.ok(talentAgencyService.getAllCountry());
     }
 }

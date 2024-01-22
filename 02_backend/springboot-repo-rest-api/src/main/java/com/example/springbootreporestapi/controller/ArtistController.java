@@ -61,6 +61,12 @@ public class ArtistController {
         return ResponseEntity.ok(artistsService.searchArtist(name, agencyName, country, pageNo, pageSize, sortBy, sortDir));
     }
 
+    //    特定のアーティストのレポートの場所を全件表示
+    @GetMapping("/{id}/reports/places")
+    public ResponseEntity<List<String>> showAllPlaces(@PathVariable(name = "id") Long id){
+        return ResponseEntity.ok(artistsService.showAllReportPlaces(id));
+    }
+
 
 
 }

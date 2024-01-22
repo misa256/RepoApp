@@ -3,6 +3,8 @@ package com.example.springbootreporestapi.service;
 import com.example.springbootreporestapi.payload.TalentAgencyDto;
 import com.example.springbootreporestapi.payload.TalentAgencyResponse;
 
+import java.util.List;
+
 public interface TalentAgencyService {
 //    全件取得
     TalentAgencyResponse getAll(int pageNo, int pageSize, String sortBy, String sortDir);
@@ -16,5 +18,9 @@ public interface TalentAgencyService {
     String deleteTalentAgency(Long id);
 //    検索
     TalentAgencyResponse searchTalentAgency(String agencyName, String country, int pageNo, int pageSize, String sortBy, String sortDir);
+//    事務所名を返す
+    List<String> getAllAgencyName();
+//    国名を返す
+    List<String> getAllCountry();
 
 }

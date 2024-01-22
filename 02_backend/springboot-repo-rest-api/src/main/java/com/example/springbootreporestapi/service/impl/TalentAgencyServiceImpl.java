@@ -17,6 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,6 +83,20 @@ public class TalentAgencyServiceImpl implements TalentAgencyService {
         ,getPageable(pageNo, pageSize, sortBy, sortDir));
         TalentAgencyResponse talentAgencyResponse = getTalentAgencyResponse(pageOfTalentAgency);
         return talentAgencyResponse;
+    }
+
+    @Override
+    public List<String> getAllAgencyName() {
+        List<String> agencyNames = talentAgencyRepository.getAllAgencyName();
+        Collections.sort(agencyNames);
+        return agencyNames;
+    }
+
+    @Override
+    public List<String> getAllCountry() {
+        List<String> countries = talentAgencyRepository.getAllCountry();
+        Collections.sort(countries);
+        return countries;
     }
 
     private TalentAgency mapToEntity(TalentAgencyDto talentAgencyDto){

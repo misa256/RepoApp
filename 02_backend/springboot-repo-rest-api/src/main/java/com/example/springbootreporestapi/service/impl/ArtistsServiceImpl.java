@@ -1,6 +1,7 @@
 package com.example.springbootreporestapi.service.impl;
 
 import com.example.springbootreporestapi.entity.Artist;
+import com.example.springbootreporestapi.entity.Report;
 import com.example.springbootreporestapi.entity.TalentAgency;
 import com.example.springbootreporestapi.exception.RepoAPIException;
 import com.example.springbootreporestapi.exception.ResourceNotFoundException;
@@ -22,8 +23,10 @@ import org.springframework.data.repository.query.parser.Part;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -141,7 +144,7 @@ public class ArtistsServiceImpl implements ArtistsService {
                 .and(artistSpecifications.findByCountry(country)), pageable);
         List<Artist> listOfArtist = artists.getContent();
         if (listOfArtist.size() == 0){
-            throw new RepoAPIException(HttpStatus.NOT_FOUND, "アーティストが存在しません。");
+            throw new RepoAPIException(HttpStatus.NOT_FOUND, "アーティストが存在しません。条件を変更してください。");
         }
         List<ArtistDto> content = listOfArtist.stream()
                 .map(artist-> mapToDto(artist))
@@ -154,6 +157,20 @@ public class ArtistsServiceImpl implements ArtistsService {
         artistResponse.setTotalPages(artists.getTotalPages());
         artistResponse.setLast(artists.isLast());
         return artistResponse;
+    }
+
+    @Override
+    public List<String> showAllReportPlaces(Long id) {
+        Set<Report> reports = artistRepository.showAllReportPlaces(id);
+        List<String> resultList = new ArrayList<>();
+        if(reports.isEmpty()){
+             resultList.add("レポートが投稿されていません");
+             return resultList;
+        };
+        reports.stream().map(report ->
+           resultList.add(report.getPlace())
+        ).collect(Collectors.toList());
+        return resultList;
     }
 
     private ArtistDto mapToDto(Artist artist){
