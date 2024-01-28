@@ -49,9 +49,10 @@ public class ReportServiceImpl implements ReportService {
         Artist artist = artistRepository.findById(artistId).orElseThrow(() -> {
             throw new RepoAPIException(HttpStatus.NOT_FOUND, "アーティストが存在しません。管理者にアーティストの登録を依頼してください。");
         });
-        Page<Report> pageOfReports = reportRepository.findByArtistId(artistId, pageable).orElseThrow(() -> {
-            throw new RepoAPIException(HttpStatus.NOT_FOUND, "アーティストのレポートが存在しません。レポートの登録は以下から行えます。");
-        });
+        Page<Report> pageOfReports = reportRepository.findByArtistId(artistId, pageable);
+        if(pageOfReports.isEmpty()){
+            throw new RepoAPIException(HttpStatus.NOT_FOUND, "アーティストのレポが存在しません。レポの登録はレポを登録するボタンから行えます。");
+        }
         List<ReportDto> reportDtos = pageOfReports.getContent()
                 .stream()
                 .map(report -> mapToDto(report))
@@ -115,7 +116,7 @@ public class ReportServiceImpl implements ReportService {
                 , pageable);
         List<Report> listOfReport = pageOfReport.getContent();
         if (listOfReport.size() == 0) {
-            throw new RepoAPIException(HttpStatus.NOT_FOUND, "レポートが存在しません。");
+            throw new RepoAPIException(HttpStatus.NOT_FOUND, "レポが存在しません。レポを投稿するボタンからレポを登録してください！");
         }
         List<ReportDto> content = listOfReport.stream()
                 .map(report -> mapToDto(report))

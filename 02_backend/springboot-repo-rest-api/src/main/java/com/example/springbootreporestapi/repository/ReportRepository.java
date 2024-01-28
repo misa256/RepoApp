@@ -12,5 +12,5 @@ import java.util.Optional;
 
 public interface ReportRepository extends JpaRepository<Report,Long>, JpaSpecificationExecutor<Report> {
 
-    Optional<Page<Report>> findByArtistId(Long artistId, Pageable pageable);
+    Page<Report> findByArtistId(Long artistId, Pageable pageable);
 }
