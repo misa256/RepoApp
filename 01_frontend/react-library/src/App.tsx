@@ -9,6 +9,7 @@ import { theme } from './theme/theme';
 import { LogoutPage } from './components/pages/LogoutPage';
 import { AgencyPage } from './components/pages/AgencyPage';
 import { ReportPage } from './components/pages/ReportPage';
+import { PostReportPage } from './components/pages/PostReportPage';
 
 
 
@@ -20,6 +21,7 @@ function App() {
         <Route path = '/' element = {<HomePage />} />
         <Route path = '/artist/:artistId' element = {<ArtistPage />} />
         <Route path = '/artist/:artistId/reports/:reportId' element = {<ReportPage />}/>
+        <Route path = '/artist/:artistId/reports' element = {<PostReportPage />}/>
         <Route path = '/Login' element = {<LoginPage />}/>
         <Route path = '/Logout' element = {<LogoutPage />}/>
         <Route path = '/agency' element = {<AgencyPage />}/>

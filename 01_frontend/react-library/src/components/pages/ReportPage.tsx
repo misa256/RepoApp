@@ -1,4 +1,5 @@
-import { Center, Flex, FormControl, FormLabel, Input, Stack, Textarea, VStack } from "@chakra-ui/react";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { Button, Center, Flex, FormControl, FormLabel, HStack, Input, Stack, Textarea, VStack } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import { Report } from "../../types/api/Report";
 import { Header } from "../organisms/Header";
@@ -53,9 +54,20 @@ export const ReportPage = () => {
                 p = {2}
                 value={text}
                 isReadOnly
-                h = '400px'
+                h = '350px'
               />
-        </FormControl>  
+        </FormControl> 
+        <HStack
+        spacing = {100}
+        >
+            <Button 
+            colorScheme = "teal"
+            leftIcon = {<EditIcon/>}
+            >レポートを更新</Button>
+            <Button colorScheme = "red"
+            leftIcon = {<DeleteIcon />}
+            >レポートを削除</Button>
+         </HStack> 
         </VStack>
         </VStack>
         </>

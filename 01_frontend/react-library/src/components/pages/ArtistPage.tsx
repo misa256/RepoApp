@@ -1,7 +1,7 @@
 import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react"
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {Artist} from "../../types/api/Artist"
 import { Header } from "../organisms/Header";
 import { EditIcon } from "@chakra-ui/icons";
@@ -10,11 +10,12 @@ import { RepoSearch } from "../organisms/report/RepoSearch";
 export const ArtistPage = () => {
     const { artistId } = useParams();
     const id : number = Number(artistId);
-    // デバッグ用
-    // console.log(typeof id);
-    // console.log(id);
+    const navigate = useNavigate();
     const [artist, setArtist] = useState<Artist>();
     const [errorMessage, setErrorMessage] = useState<string>("");
+    const onClickPostButton = () => {
+        navigate(`/artist/${id}/reports`)
+    }
     useEffect(()=>{
         axios.get(`http://localhost:8080/api/repo/artist/${id}`)
         .then(res=>setArtist(res.data))
@@ -47,6 +48,7 @@ export const ArtistPage = () => {
             <Button 
             colorScheme = "teal"
             leftIcon = {<EditIcon />}
+            onClick = {onClickPostButton}
             >
                 レポを投稿する
                 </Button>

@@ -8,7 +8,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+//        全てのエンドポイントに対してCORSを設定
         registry.addMapping("/**")
+//                アクセス許可するoriginを設定
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("GET", "POST", "PUT", "DELETE");
     }
