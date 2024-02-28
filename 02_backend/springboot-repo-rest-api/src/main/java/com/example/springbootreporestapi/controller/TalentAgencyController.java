@@ -1,7 +1,6 @@
 package com.example.springbootreporestapi.controller;
 
 import com.example.springbootreporestapi.payload.TalentAgencyDto;
-import com.example.springbootreporestapi.payload.TalentAgencyResponse;
 import com.example.springbootreporestapi.service.TalentAgencyService;
 import com.example.springbootreporestapi.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +18,11 @@ public class TalentAgencyController {
     private TalentAgencyService talentAgencyService;
 
     @GetMapping
-    public ResponseEntity<TalentAgencyResponse> getAll(
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+    public ResponseEntity<List<TalentAgencyDto>> getAll(
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir
     ){
-        return ResponseEntity.ok(talentAgencyService.getAll(pageNo, pageSize, sortBy, sortDir));
+        return ResponseEntity.ok(talentAgencyService.getAll(sortBy, sortDir));
     }
 
     @GetMapping("/{id}")
@@ -58,15 +55,13 @@ public class TalentAgencyController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<TalentAgencyResponse> searchTalentAgency(
+    public ResponseEntity<List<TalentAgencyDto>> searchTalentAgency(
             @RequestParam("agencyName") String agencyName,
             @RequestParam("country") String country,
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir
     ){
-        return ResponseEntity.ok(talentAgencyService.searchTalentAgency(agencyName, country, pageNo, pageSize, sortBy, sortDir));
+        return ResponseEntity.ok(talentAgencyService.searchTalentAgency(agencyName, country, sortBy, sortDir));
     }
 
     @GetMapping("/getAgencyNames")

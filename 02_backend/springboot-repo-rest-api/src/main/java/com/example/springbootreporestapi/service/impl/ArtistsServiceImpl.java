@@ -6,7 +6,6 @@ import com.example.springbootreporestapi.entity.TalentAgency;
 import com.example.springbootreporestapi.exception.RepoAPIException;
 import com.example.springbootreporestapi.exception.ResourceNotFoundException;
 import com.example.springbootreporestapi.payload.ArtistDto;
-import com.example.springbootreporestapi.payload.ArtistResponse;
 import com.example.springbootreporestapi.payload.InputArtistDto;
 import com.example.springbootreporestapi.repository.ArtistRepository;
 import com.example.springbootreporestapi.repository.TalentAgencyRepository;
@@ -41,7 +40,7 @@ public class ArtistsServiceImpl implements ArtistsService {
     private ArtistSpecifications artistSpecifications;
 
     @Override
-    public ArtistResponse getAllArtists(int pageNo, int pageSize, String sortBy, String sortDir) {
+    public List<ArtistDto> getAllArtists(String sortBy, String sortDir) {
 
         //sortDirがASCだったら、昇順で、そうでなかったら降順でSortクラスを返す
         Sort.Order ascOrder = Sort.Order.asc(sortBy).ignoreCase();
@@ -49,27 +48,13 @@ public class ArtistsServiceImpl implements ArtistsService {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(ascOrder)
                 : Sort.by(desOrder);
-
-        //ページングに関する情報を持つパラメータを作成
-        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         //ページングに関する情報と、中身を持つ
-        Page<Artist> artists = artistRepository.findAll(pageable);
-        //ページ情報から、中身を取ってくる
-        List<Artist> listOfArtist = artists.getContent();
-        
-        List<ArtistDto> content = listOfArtist.stream()
+        List<Artist> artists = artistRepository.findAll(sort);
+
+        List<ArtistDto> artistDtos = artists.stream()
                 .map(artist -> mapToDto(artist))
                 .collect(Collectors.toList());
-
-        ArtistResponse artistResponse = new ArtistResponse();
-        artistResponse.setContent(content);
-        artistResponse.setPageNo(artists.getNumber());
-        artistResponse.setPageSize(artists.getSize());
-        artistResponse.setTotalElements(artists.getTotalElements());
-        artistResponse.setTotalPages(artists.getTotalPages());
-        artistResponse.setLast(artists.isLast());
-
-        return artistResponse;
+        return artistDtos;
     }
 
     @Override
@@ -129,31 +114,22 @@ public class ArtistsServiceImpl implements ArtistsService {
 
 
     @Override
-    public ArtistResponse searchArtist(String name, String agencyName, String country, int pageNo, int pageSize, String sortBy, String sortDir){
+    public List<ArtistDto> searchArtist(String name, String agencyName, String country, String sortBy, String sortDir){
         Sort.Order ascOrder = Sort.Order.asc(sortBy).ignoreCase();
         Sort.Order desOrder = Sort.Order.desc(sortBy).ignoreCase();
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(ascOrder)
                 : Sort.by(desOrder);
-        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Artist> artists = artistRepository.findAll(Specification
+        List<Artist> artists = artistRepository.findAll(Specification
                 .where(artistSpecifications.findByNameContainingIgnoreCase(name))
                 .and(artistSpecifications.findByAgencyName(agencyName))
-                .and(artistSpecifications.findByCountry(country)), pageable);
-        List<Artist> listOfArtist = artists.getContent();
-        if (listOfArtist.size() == 0){
+                .and(artistSpecifications.findByCountry(country)), sort);
+        if (artists.size() == 0){
             throw new RepoAPIException(HttpStatus.NOT_FOUND, "アーティストが存在しません。条件を変更してください。");
         }
-        List<ArtistDto> content = listOfArtist.stream()
+        List<ArtistDto> artistDtos = artists.stream()
                 .map(artist-> mapToDto(artist))
                 .collect(Collectors.toList());
-        ArtistResponse artistResponse = new ArtistResponse();
-        artistResponse.setContent(content);
-        artistResponse.setPageNo(artists.getNumber());
-        artistResponse.setPageSize(artists.getSize());
-        artistResponse.setTotalElements(artists.getTotalElements());
-        artistResponse.setTotalPages(artists.getTotalPages());
-        artistResponse.setLast(artists.isLast());
-        return artistResponse;
+        return artistDtos;
     }
 
     @Override

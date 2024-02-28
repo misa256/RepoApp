@@ -1,7 +1,6 @@
 package com.example.springbootreporestapi.controller;
 
 import com.example.springbootreporestapi.payload.ReportDto;
-import com.example.springbootreporestapi.payload.ReportResponse;
 import com.example.springbootreporestapi.service.ReportService;
 import com.example.springbootreporestapi.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/repo")
@@ -19,14 +20,12 @@ public class ReportController {
 
 //    特定のアーティストのレポート全件取得
     @GetMapping("/artist/{artistId}/reports")
-    public ResponseEntity<ReportResponse> getAllReports(
+    public ResponseEntity<List<ReportDto>> getAllReports(
             @PathVariable(name = "artistId") Long artistId,
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir
     ){
-        return ResponseEntity.ok(reportService.getAllReport(artistId, pageNo, pageSize, sortBy, sortDir));
+        return ResponseEntity.ok(reportService.getAllReport(artistId,sortBy, sortDir));
     }
 //特定のアーティストのレポートを新規作成
     @PostMapping("/artist/{artistId}/reports")
@@ -67,16 +66,14 @@ public class ReportController {
 
 //    特定のアーティストのレポートを検索
     @GetMapping("/artist/{artistId}/reports/search")
-    public ResponseEntity<ReportResponse> searchReport(
+    public ResponseEntity<List<ReportDto>> searchReport(
             @PathVariable(name = "artistId") Long artistId,
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir,
             @RequestParam(value = "place") String place,
             @RequestParam(value = "date") String date,
             @RequestParam(value = "title") String title
     ){
-    return ResponseEntity.ok(reportService.searchReport(artistId, pageNo, pageSize, sortBy, sortDir, place, date, title));
+    return ResponseEntity.ok(reportService.searchReport(artistId, sortBy, sortDir, place, date, title));
     }
 }

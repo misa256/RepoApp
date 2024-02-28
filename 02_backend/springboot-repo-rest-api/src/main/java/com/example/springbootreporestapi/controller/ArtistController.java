@@ -1,7 +1,6 @@
 package com.example.springbootreporestapi.controller;
 
 import com.example.springbootreporestapi.payload.ArtistDto;
-import com.example.springbootreporestapi.payload.ArtistResponse;
 import com.example.springbootreporestapi.payload.InputArtistDto;
 import com.example.springbootreporestapi.service.ArtistsService;
 import com.example.springbootreporestapi.utils.AppConstants;
@@ -19,13 +18,11 @@ public class ArtistController {
     private ArtistsService artistsService;
 
     @GetMapping
-    public ResponseEntity<ArtistResponse> getAllArtist(
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+    public ResponseEntity<List<ArtistDto>> getAllArtist(
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir
     ){
-        return ResponseEntity.ok(artistsService.getAllArtists(pageNo, pageSize, sortBy, sortDir));
+        return ResponseEntity.ok(artistsService.getAllArtists(sortBy, sortDir));
     }
 
     @GetMapping("/{id}")
@@ -50,15 +47,13 @@ public class ArtistController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ArtistResponse> searchArtist(
+    public ResponseEntity<List<ArtistDto>> searchArtist(
             @RequestParam("name") String name,
             @RequestParam("agencyName") String agencyName,
             @RequestParam("country") String country,
-            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIR, required = false) String sortDir){
-        return ResponseEntity.ok(artistsService.searchArtist(name, agencyName, country, pageNo, pageSize, sortBy, sortDir));
+        return ResponseEntity.ok(artistsService.searchArtist(name, agencyName, country, sortBy, sortDir));
     }
 
     //    特定のアーティストのレポートの場所を全件表示

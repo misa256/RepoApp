@@ -3,7 +3,6 @@ package com.example.springbootreporestapi.service.impl;
 import com.example.springbootreporestapi.entity.TalentAgency;
 import com.example.springbootreporestapi.exception.RepoAPIException;
 import com.example.springbootreporestapi.payload.TalentAgencyDto;
-import com.example.springbootreporestapi.payload.TalentAgencyResponse;
 import com.example.springbootreporestapi.repository.TalentAgencyRepository;
 import com.example.springbootreporestapi.repository.specification.TalentAgencySpecification;
 import com.example.springbootreporestapi.service.TalentAgencyService;
@@ -34,11 +33,10 @@ public class TalentAgencyServiceImpl implements TalentAgencyService {
     private TalentAgencySpecification talentAgencySpecification;
 
     @Override
-    public TalentAgencyResponse getAll(int pageNo, int pageSize, String sortBy, String sortDir) {
-        Pageable pageable = getPageable(pageNo, pageSize, sortBy, sortDir);
-        Page pageOfTalentAgency = talentAgencyRepository.findAll(pageable);
-        TalentAgencyResponse talentAgencyResponse = getTalentAgencyResponse(pageOfTalentAgency);
-        return  talentAgencyResponse;
+    public List<TalentAgencyDto> getAll(String sortBy, String sortDir) {
+        Sort sort = getSort(sortBy, sortDir);
+        List<TalentAgency> talentAgencies = talentAgencyRepository.findAll(sort);
+        return getTalentAgencyDtos(talentAgencies);
     }
 
     @Override
@@ -76,13 +74,12 @@ public class TalentAgencyServiceImpl implements TalentAgencyService {
     }
 
     @Override
-    public TalentAgencyResponse searchTalentAgency(String agencyName, String country, int pageNo, int pageSize, String sortBy, String sortDir) {
-        Page<TalentAgency> pageOfTalentAgency = talentAgencyRepository.findAll(Specification
+    public List<TalentAgencyDto> searchTalentAgency(String agencyName, String country, String sortBy, String sortDir) {
+        List<TalentAgency> talentAgencies = talentAgencyRepository.findAll(Specification
                 .where(talentAgencySpecification.findByAgencyName(agencyName))
                 .and(talentAgencySpecification.findByCountry(country))
-        ,getPageable(pageNo, pageSize, sortBy, sortDir));
-        TalentAgencyResponse talentAgencyResponse = getTalentAgencyResponse(pageOfTalentAgency);
-        return talentAgencyResponse;
+        ,getSort(sortBy, sortDir));
+        return getTalentAgencyDtos(talentAgencies);
     }
 
     @Override
@@ -107,32 +104,21 @@ public class TalentAgencyServiceImpl implements TalentAgencyService {
         return modelMapper.map(talentAgency, TalentAgencyDto.class);
     }
 
-    private Pageable getPageable(int pageNo, int pageSize, String sortBy, String sortDir) {
+    private Sort getSort(String sortBy, String sortDir) {
         //sortDirがASCだったら、昇順で、そうでなかったら降順でSortクラスを返す
         Sort.Order ascOrder = Sort.Order.asc(sortBy).ignoreCase();
         Sort.Order desOrder = Sort.Order.desc(sortBy).ignoreCase();
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
                 Sort.by(ascOrder)
                 : Sort.by(desOrder);
-
-        //ページングに関する情報を持つパラメータを作成
-        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        return pageable;
+        return sort;
     }
 
-    private TalentAgencyResponse getTalentAgencyResponse(Page pageOfTalentAgency) {
-        List<TalentAgency> listOfTalentAgency = pageOfTalentAgency.getContent();
-        List<TalentAgencyDto> content = listOfTalentAgency.stream().map(
+    private List<TalentAgencyDto> getTalentAgencyDtos(List<TalentAgency> talentAgencies) {
+        List<TalentAgencyDto> talentAgencyDtos = talentAgencies.stream().map(
                 talentAgency -> mapToDto(talentAgency)
         ).collect(Collectors.toList());
-        TalentAgencyResponse talentAgencyResponse = new TalentAgencyResponse();
-        talentAgencyResponse.setContent(content);
-        talentAgencyResponse.setPageNo(pageOfTalentAgency.getNumber());
-        talentAgencyResponse.setPageSize(pageOfTalentAgency.getSize());
-        talentAgencyResponse.setTotalElements(pageOfTalentAgency.getTotalElements());
-        talentAgencyResponse.setTotalPages(pageOfTalentAgency.getTotalPages());
-        talentAgencyResponse.setLast(pageOfTalentAgency.isLast());
-        return talentAgencyResponse;
+        return talentAgencyDtos;
     }
     
     

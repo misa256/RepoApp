@@ -22,7 +22,7 @@ export const RepoSearchResultCard : FC<ReportInfo> = (props) => {
       shadow="md"
       p={4}
       _hover={{ cursor: "pointer", opacity: 0.8 }}
-      onClick={()=>navigate(`/artist/${artistId}/reports/${id}`,{state:report}) }
+      onClick={()=>navigate(`/artist/${artistId}/reports/${id}`,{state:report})}
     >
       <Stack textAlign="center">
         <Text fontSize="lg" fontWeight="bold">
