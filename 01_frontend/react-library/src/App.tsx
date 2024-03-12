@@ -10,6 +10,8 @@ import { LogoutPage } from './components/pages/LogoutPage';
 import { AgencyPage } from './components/pages/AgencyPage';
 import { ReportPage } from './components/pages/ReportPage';
 import { PostReportPage } from './components/pages/PostReportPage';
+import { ContactPage } from './components/pages/ContactPage';
+import { AdminPage } from './components/pages/AdminPage';
 
 
 
@@ -25,6 +27,8 @@ function App() {
         <Route path = '/Login' element = {<LoginPage />}/>
         <Route path = '/Logout' element = {<LogoutPage />}/>
         <Route path = '/agency' element = {<AgencyPage />}/>
+        <Route path = '/contact' element = {<ContactPage />}/>
+        <Route path = '/admin' element = {<AdminPage />}/>
         <Route path = '*' element={<NotFound />}/>
       </Routes>
       </BrowserRouter>
