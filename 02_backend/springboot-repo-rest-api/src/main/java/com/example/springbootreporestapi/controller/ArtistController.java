@@ -7,12 +7,13 @@ import com.example.springbootreporestapi.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/repo/artist")
+@RequestMapping("/repoApi/artist")
 public class ArtistController {
     @Autowired
     private ArtistsService artistsService;
@@ -30,17 +31,20 @@ public class ArtistController {
         return ResponseEntity.ok(artistsService.getArtist(id));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<ArtistDto> createArtist(@RequestBody InputArtistDto inputArtistDto){
         return new ResponseEntity<>(artistsService.createArtist(inputArtistDto), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ArtistDto> updateArtist(@RequestBody InputArtistDto inputArtistDto,
                                                   @PathVariable(name = "id") Long id){
         return new ResponseEntity<>(artistsService.updateArtist(inputArtistDto,id),HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteArtist(@PathVariable(name = "id") Long id){
         return new ResponseEntity<>(artistsService.deleteArtist(id), HttpStatus.OK);

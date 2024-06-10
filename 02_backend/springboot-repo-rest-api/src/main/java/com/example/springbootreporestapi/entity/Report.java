@@ -20,8 +20,11 @@ public class Report {
     @Column(name = "text", nullable = false)
     private String text;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "artist_id",nullable = false)
+    @JoinColumn(name = "artist_id", nullable = false)
     private Artist artist;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public long getId() {
         return id;
@@ -62,16 +65,26 @@ public class Report {
     public void setText(String text) {
         this.text = text;
     }
-//privateに変更
+
+    //privateに変更(循環参照に対応)
     private Artist getArtist() {
         return artist;
     }
-//getterを呼び出し
-    public Artist acquireArtist(){
+
+    //getterを呼び出し(循環参照に対応)
+    public Artist acquireArtist() {
         return getArtist();
     }
 
     public void setArtist(Artist artist) {
         this.artist = artist;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

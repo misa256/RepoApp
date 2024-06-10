@@ -14,4 +14,6 @@ import java.util.Optional;
 public interface ReportRepository extends JpaRepository<Report,Long>, JpaSpecificationExecutor<Report> {
 
     List<Report> findByArtistId(Long artistId, Sort sort);
+
+    List<Report> findByUserId(Long userId, Sort sort);
 }

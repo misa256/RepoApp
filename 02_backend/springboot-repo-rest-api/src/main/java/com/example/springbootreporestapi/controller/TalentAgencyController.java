@@ -6,12 +6,13 @@ import com.example.springbootreporestapi.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/repo/agency")
+@RequestMapping("/repoApi/agency")
 public class TalentAgencyController {
 
     @Autowired
@@ -32,6 +33,7 @@ public class TalentAgencyController {
         return ResponseEntity.ok(talentAgencyService.getTalentAgency(id));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<TalentAgencyDto> createTalentAgency(
             @RequestBody TalentAgencyDto talentAgencyDto
@@ -39,6 +41,7 @@ public class TalentAgencyController {
         return new ResponseEntity<>(talentAgencyService.createTalentAgency(talentAgencyDto), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TalentAgencyDto> updateTalentAgency(
             @PathVariable(name = "id") Long id,
@@ -47,6 +50,7 @@ public class TalentAgencyController {
         return ResponseEntity.ok(talentAgencyService.updateTalentAgency(id, talentAgencyDto));
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTalentAgency(
             @PathVariable(name = "id") Long id

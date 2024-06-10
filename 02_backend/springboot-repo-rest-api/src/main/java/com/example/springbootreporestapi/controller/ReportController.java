@@ -1,5 +1,6 @@
 package com.example.springbootreporestapi.controller;
 
+import com.example.springbootreporestapi.payload.InputReportDto;
 import com.example.springbootreporestapi.payload.ReportDto;
 import com.example.springbootreporestapi.service.ReportService;
 import com.example.springbootreporestapi.utils.AppConstants;
@@ -7,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/repo")
+@RequestMapping("/repoApi/repo")
 public class ReportController {
 
     @Autowired
@@ -31,9 +33,9 @@ public class ReportController {
     @PostMapping("/artist/{artistId}/reports")
     public ResponseEntity<ReportDto> createReport(
             @PathVariable(name = "artistId") Long artistId,
-            @RequestBody ReportDto reportDto
+            @RequestBody InputReportDto inputReportDto
     ){
-    return new ResponseEntity<>(reportService.createReport(artistId, reportDto), HttpStatus.CREATED);
+    return new ResponseEntity<>(reportService.createReport(artistId, inputReportDto), HttpStatus.CREATED);
     }
 
 //    特定のアーティストの特定のレポートを取得
@@ -75,5 +77,13 @@ public class ReportController {
             @RequestParam(value = "title") String title
     ){
     return ResponseEntity.ok(reportService.searchReport(artistId, sortBy, sortDir, place, date, title));
+    }
+
+//    特定のユーザーのレポートを全件取得
+    @GetMapping("/user/{userId}/reports")
+    public ResponseEntity<List<ReportDto>> getUserAllReport(
+            @PathVariable(name = "userId") Long userId
+    ){
+        return ResponseEntity.ok(reportService.getUserAllReport(userId));
     }
 }
