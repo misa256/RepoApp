@@ -57,8 +57,10 @@ public class ReportServiceImpl implements ReportService {
                 .stream()
                 .map(report -> {
                     ReportDto responseReportDto = mapToDto(report);
-                    String userName = report.getUser().getName();
-                    responseReportDto.setUserName(userName);
+//                    String userName = report.getUser().getName();
+//                    responseReportDto.setUserName(userName);
+//                    String userEmail = report.getUser().getEmail();
+//                    responseReportDto.setUserEmail(userEmail);
                     return responseReportDto;
                 })
                 .collect(Collectors.toList());
@@ -78,7 +80,7 @@ public class ReportServiceImpl implements ReportService {
                 }
         );
         report.setArtist(artist);
-        User user = userRepository.findById(inputReportDto.getUserId()).orElseThrow(
+        User user = userRepository.findByEmail(getLoginUserDetails().getUsername()).orElseThrow(
                 () -> {
                     throw new RepoAPIException(HttpStatus.NOT_FOUND, "ユーザーが登録されていません。ユーザー登録を行ってください。");}
                 );

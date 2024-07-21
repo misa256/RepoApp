@@ -55,7 +55,7 @@ export const ArtistSearch: FC = () => {
     setItemsOffset(0);
     axios
       .get(
-        `http://localhost:8080/api/repo/artist/search?name=${artistName}&agencyName=${agency}&country=${country}&sortBy=${sortBy}&sortDir=`
+        `http://localhost:8080/repoApi/artist/search?name=${artistName}&agencyName=${agency}&country=${country}&sortBy=${sortBy}&sortDir=`
       )
       .then((res) => {
         setResultArtists(res.data);
@@ -66,12 +66,12 @@ export const ArtistSearch: FC = () => {
   // 初回マウント時に行う処理
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/repo/agency/getAllCountries")
+      .get("http://localhost:8080/repoApi/agency/getAllCountries")
       .then((res) => setCountryOptions(res.data))
       .catch((error) => console.log(error));
 
     axios
-      .get("http://localhost:8080/api/repo/agency/getAgencyNames")
+      .get("http://localhost:8080/repoApi/agency/getAgencyNames")
       .then((res) => setAgencyOptions(res.data))
       .catch((error) => console.log(error));
   }, []);

@@ -3,6 +3,7 @@ package com.example.springbootreporestapi.service.impl;
 import com.example.springbootreporestapi.auth.LoginUserDetails;
 import com.example.springbootreporestapi.entity.User;
 import com.example.springbootreporestapi.exception.RepoAPIException;
+import com.example.springbootreporestapi.payload.LoginDto;
 import com.example.springbootreporestapi.payload.UserDto;
 import com.example.springbootreporestapi.repository.UserRepository;
 import com.example.springbootreporestapi.service.UserService;

@@ -8,5 +8,4 @@ public class InputReportDto {
     private String date;
     private String title;
     private String text;
-    private Long userId;
 }

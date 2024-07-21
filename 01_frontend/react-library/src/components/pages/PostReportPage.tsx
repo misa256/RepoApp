@@ -38,11 +38,11 @@ export const PostReportPage = () => {
   const onClickPostButton = (inputData : InputData ) => {
     console.log(inputData)
     axios
-      .post(`http://localhost:8080/api/repo/artist/${id}/reports`, inputData)
+      .post(`http://localhost:8080/repoApi/repo/artist/${id}/reports`, inputData)
       .then((res) => {
         console.log(res);
         toast({
-          title: "登録しました!",
+          title: "登録が完了しました!",
           status: "success",
           duration: 3000,
           isClosable: true,

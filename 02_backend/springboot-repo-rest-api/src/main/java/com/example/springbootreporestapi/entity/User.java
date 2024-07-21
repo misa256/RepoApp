@@ -25,7 +25,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "roles", nullable = false)
-    private String roles;
+    private String[] roles;
    @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Report> reports = new HashSet<>();
@@ -62,11 +62,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRoles() {
+    public String[] getRoles() {
         return roles;
     }
 
-    public void setRoles(String roles) {
+    public void setRoles(String[] roles) {
         this.roles = roles;
     }
 

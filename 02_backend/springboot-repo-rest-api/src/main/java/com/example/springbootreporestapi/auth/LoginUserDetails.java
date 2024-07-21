@@ -18,7 +18,7 @@ public class LoginUserDetails implements UserDetails {
         this.email = user.getEmail();
         this.name = user.getName();
         this.password = user.getPassword();
-        this.authorities = Arrays.stream(user.getRoles().split(","))
+        this.authorities = Arrays.stream(user.getRoles())
                 .map(role -> new SimpleGrantedAuthority(role))
                 .toList();
     }

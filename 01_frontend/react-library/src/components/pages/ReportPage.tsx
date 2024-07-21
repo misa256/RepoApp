@@ -20,6 +20,7 @@ import {
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { getLoggedInUserEmail } from "../../hooks/AuthService";
 import { Report } from "../../types/api/Report";
 import { Header } from "../organisms/Header";
 
@@ -34,7 +35,7 @@ export const ReportPage = () => {
   // report情報を取得
   const location = useLocation();
   const report: Report = location.state;
-  const { id, date, place, title, text } = report;
+  const { id, date, place, title, text, userName, userEmail } = report;
   // アーティストIDを取得
   const { artistId } = useParams();
   const numberArtistId: number = Number(artistId);
@@ -52,7 +53,7 @@ export const ReportPage = () => {
   const onClickUpdateButton = (updatedData : updatedData) => {
     axios
       .put(
-        `http://localhost:8080/api/repo/artist/${numberArtistId}/reports/${id}`,
+        `http://localhost:8080/repoApi/repo/artist/${numberArtistId}/reports/${id}`,
         { place: updatedData.newPlace, 
           date: updatedData.newDate, 
           title: updatedData.newTitle, 
@@ -60,7 +61,7 @@ export const ReportPage = () => {
       )
       .then((res) => {
         toast({
-          title: "更新しました!",
+          title: "更新が完了しました!",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -82,7 +83,7 @@ export const ReportPage = () => {
   const onClickDeleteButton = () => {
     axios
       .delete(
-        `http://localhost:8080/api/repo/artist/${numberArtistId}/reports/${id}`
+        `http://localhost:8080/repoApi/repo/artist/${numberArtistId}/reports/${id}`
       )
       .then((res) => {
         onClose();
@@ -171,35 +172,40 @@ export const ReportPage = () => {
             >
               戻る
             </Button>
+            {/* ログインユーザーとレポートを作成したユーザーが同じ場合、表示する */}
+            {userEmail === getLoggedInUserEmail() &&
+            <>
             <Button
-              colorScheme="teal"
-              leftIcon={<EditIcon />}
-              onClick={handleSubmit(onClickUpdateButton)}
-            >
-              レポートを更新
-            </Button>
-            <Button
-              colorScheme="red"
-              leftIcon={<DeleteIcon />}
-              onClick={onOpen}
-            >
-              レポートを削除
-            </Button>
-            <Modal isOpen={isOpen} onClose={onClose} motionPreset='slideInTop'>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalBody>
-                  <Text fontWeight='bold' m = {4}>本当に削除しますか？</Text>
-                </ModalBody>
-                <ModalFooter>
-                  <Button colorScheme="gray" mr={3} onClick={onClose}>
-                    キャンセル
-                  </Button>
-                  <Button colorScheme="red" onClick={onClickDeleteButton}>削除する</Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-          </HStack>
+            colorScheme="teal"
+            leftIcon={<EditIcon />}
+            onClick={handleSubmit(onClickUpdateButton)}
+          >
+            レポートを更新
+          </Button>
+           <Button
+           colorScheme="red"
+           leftIcon={<DeleteIcon />}
+           onClick={onOpen}
+         >
+           レポートを削除
+         </Button>
+         <Modal isOpen={isOpen} onClose={onClose} motionPreset='slideInTop'>
+           <ModalOverlay />
+           <ModalContent>
+             <ModalBody>
+               <Text fontWeight='bold' m = {4}>本当に削除しますか？</Text>
+             </ModalBody>
+             <ModalFooter>
+               <Button colorScheme="gray" mr={3} onClick={onClose}>
+                 キャンセル
+               </Button>
+               <Button colorScheme="red" onClick={onClickDeleteButton}>削除する</Button>
+             </ModalFooter>
+           </ModalContent>
+         </Modal>
+         </>
+            }           
+        </HStack>
         </VStack>
       </VStack>
     </>

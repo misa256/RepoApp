@@ -59,7 +59,7 @@ export const RepoSearch: FC<props> = (props) => {
     }
     axios
       .get(
-        `http://localhost:8080/api/repo/artist/${id}/reports/search?sortBy=${sortBy}&sortDir=&place=${place}&date=${date}&title=${title}`
+        `http://localhost:8080/repoApi/repo/artist/${id}/reports/search?sortBy=${sortBy}&sortDir=&place=${place}&date=${date}&title=${title}`
       )
       .then((res) => setReports(res.data))
       .catch((error) => {
@@ -70,12 +70,12 @@ export const RepoSearch: FC<props> = (props) => {
   useEffect(() => {
     // レポートの場所を取得
     axios
-      .get(`http://localhost:8080/api/repo/artist/${id}/reports/places`)
+      .get(`http://localhost:8080/repoApi/artist/${id}/reports/places`)
       .then((res) => setPlaces(res.data))
       .catch((error) => console.log(error));
     // 特定のアーティストのレポート全件取得
     axios
-      .get(`http://localhost:8080/api/repo/artist/${id}/reports`)
+      .get(`http://localhost:8080/repoApi/repo/artist/${id}/reports`)
       .then((res) => setReports(res.data))
       .catch((error) => setErrorMessage(error.response.data.message));
   }, [id]);

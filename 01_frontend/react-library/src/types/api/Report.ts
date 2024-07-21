@@ -4,4 +4,6 @@ date : string;
 place : string;
 title : string;
 text : string;
+userName : string;
+userEmail : string
 }

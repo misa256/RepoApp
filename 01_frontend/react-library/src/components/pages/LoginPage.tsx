@@ -1,5 +1,12 @@
+import { Header } from "../organisms/Header"
+import { LoginForm } from "../organisms/user/LoginForm"
+
 export const LoginPage = () => {
     return(
-        <h2>ログインページです</h2>
+        <>
+        <Header />
+       <LoginForm />
+        </>
+       
     )
 }

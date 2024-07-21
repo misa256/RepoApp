@@ -17,7 +17,7 @@ export const ArtistPage = () => {
         navigate(`/artist/${id}/reports`)
     }
     useEffect(()=>{
-        axios.get(`http://localhost:8080/api/repo/artist/${id}`)
+        axios.get(`http://localhost:8080/repoApi/artist/${id}`)
         .then(res=>setArtist(res.data))
         .catch(error => setErrorMessage(error.response.data.message));
     }, []);

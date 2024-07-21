@@ -11,7 +11,7 @@ type ReportInfo = {
 
 export const RepoSearchResultCard : FC<ReportInfo> = (props) => {
     const { report, artistId} = props;
-    const { id, date, place, title, text } = report
+    const { id, date, place, title, text, userName, userEmail } = report
     const navigate = useNavigate();   
     return(
         <Box
@@ -30,6 +30,9 @@ export const RepoSearchResultCard : FC<ReportInfo> = (props) => {
         </Text>
         <Text fontSize="sm" color="gray">
           🗓 {date}
+        </Text>
+        <Text fontSize="sm" color="gray">
+          💛 {userName}
         </Text>
         <Text fontSize="sm" color="gray">
           📍 {place}
