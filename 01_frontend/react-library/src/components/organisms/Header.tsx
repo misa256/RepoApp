@@ -16,9 +16,9 @@ export const Header:FC = memo(() => {
   const onClickLogin = useCallback(()=>{
     navigate('/login', {replace : false})
   }, []);
-  // const onClickLogout = useCallback(()=>{
-  //   navigate('/logout', {replace : false})
-  // }, []);
+  const onClickMyPage = useCallback(()=>{
+    navigate('/myPage', {replace : false})
+  }, [])
 return(
   <Flex
   as = 'header'
@@ -42,6 +42,7 @@ return(
 spacing = '40px'
 >
   <Link onClick={onClickAgencyPage}>事務所一覧</Link>
+  {isAuthenticated && <Link onClick = {onClickMyPage}>マイページ</Link>}
   {isAuthenticated || <Link onClick={onClickLogin}>ログイン</Link>}
   {isAuthenticated &&
   <>

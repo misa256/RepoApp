@@ -1,4 +1,5 @@
-import { Box, Button, FormControl, FormLabel, Input, VStack, Text, Flex } from "@chakra-ui/react"
+import { ViewIcon } from "@chakra-ui/icons";
+import { Box, Button, FormControl, FormLabel, Input, VStack, Text, Flex, InputGroup, InputRightElement } from "@chakra-ui/react"
 import { type } from "@testing-library/user-event/dist/type";
 import axios from "axios";
 import { useContext, useState } from "react";
@@ -24,16 +25,20 @@ export const LoginForm = () => {
     // 画面遷移
     const navigate = useNavigate();　
     const location = useLocation();
-    const from = location?.state?.from?.pathname || '/';
+    const from = location?.state?.from?.pathname;
     const linkStyle = {
       textDecoration: 'underline'
     };
+    // パスワード表示・非表示切り替え
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const onClickShowPasswordButton = () => setShowPassword(!showPassword);
     // エラーメッセージ
     const [errorMessage, setErrorMessage] = useState<string>();
     //ログインボタン押した時の動き
     const onClickLoginButton = async (data : LoginUser) => {
        await axios.post('http://localhost:8080/repoApi/auth/login', data)
         .then((res)=>{
+          console.log(res.data);
             const token = 'Bearer ' + res.data.accessToken;
             //  作成したtokenをローカルストレージに保存
              storeToken(token);
@@ -43,7 +48,11 @@ export const LoginForm = () => {
              saveLoggedInUserName(res.data.name);
              saveLoggedInUserRoles(res.data.roles);
             // 元いたページに戻る
+            if(from){
             navigate(from, { replace: true });
+          }else{
+            navigate(-1);
+          }
        })
        .catch((e)=>{
         setErrorMessage(e.response.data.message);
@@ -67,12 +76,17 @@ export const LoginForm = () => {
             </FormControl>
             <FormControl id="password">
               <FormLabel>パスワード</FormLabel>
+              <InputGroup>
               <Input
-                type="password"
+                type = {showPassword ? "text" : "password"}
                 {...register("loginPassword", {
                   required : "パスワードを入力してください。"
                 })}
               />
+              <InputRightElement>
+                <ViewIcon onClick = {onClickShowPasswordButton}/>
+                </InputRightElement>
+              </InputGroup>
               <Text color="tomato">{errors.loginPassword?.message}</Text>
             </FormControl>
             {errorMessage && 

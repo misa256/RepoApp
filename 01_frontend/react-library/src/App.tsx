@@ -13,6 +13,7 @@ import { ContactPage } from './components/pages/ContactPage';
 import { AdminPage } from './components/pages/AdminPage';
 import { isUserLoggedIn} from './hooks/AuthService';
 import { UserRegisterPage } from './components/pages/UserRegisterPage';
+import { MyPage } from './components/pages/MyPage';
 
 
 
@@ -48,6 +49,11 @@ function App() {
         <AuthenticatedRoute>
         <ContactPage />
         </AuthenticatedRoute>}/>
+        <Route path = '/myPage' element = {
+        <AuthenticatedRoute>
+          <MyPage />
+        </AuthenticatedRoute>
+        } />
         <Route path = '/admin' element = {<AdminPage />}/>
         <Route path = '/user/register' element={<UserRegisterPage />}/>
         <Route path = '*' element={<NotFound />}/>

@@ -51,7 +51,7 @@ public class ReportServiceImpl implements ReportService {
         });
         List<Report> reports = reportRepository.findByArtistId(artistId, sort);
         if (reports.isEmpty()) {
-            throw new RepoAPIException(HttpStatus.NOT_FOUND, "アーティストのレポが存在しません。レポの登録はレポを登録するボタンから行えます。");
+            throw new RepoAPIException(HttpStatus.NOT_FOUND, "アーティストのレポが存在しません。");
         }
         List<ReportDto> reportDtos = reports
                 .stream()
@@ -133,7 +133,7 @@ public class ReportServiceImpl implements ReportService {
                         .and(reportSpecification.findByContainingTitle(title))
                 , sort);
         if (reports.size() == 0) {
-            throw new RepoAPIException(HttpStatus.NOT_FOUND, "レポが存在しません。レポを投稿するボタンからレポを登録してください！");
+            throw new RepoAPIException(HttpStatus.NOT_FOUND, "レポが存在しません。");
         }
         List<ReportDto> reportDtos = reports.stream()
                 .map(report -> mapToDto(report))
@@ -146,10 +146,15 @@ public class ReportServiceImpl implements ReportService {
         Sort sort = getSort("date", "ASC");
         List<Report> reports = reportRepository.findByUserId(userId, sort);
         if (reports.size() == 0) {
-            throw new RepoAPIException(HttpStatus.NOT_FOUND, "レポが存在しません。レポを投稿するボタンからレポを登録してください！");
+            throw new RepoAPIException(HttpStatus.NOT_FOUND, "レポが存在しません。");
         }
         List<ReportDto> reportDtos = reports.stream()
-                .map(report -> mapToDto(report))
+                .map((report) -> {
+                    ReportDto reportDto = mapToDto(report);
+                    reportDto.setArtistId(report.acquireArtist().getId());
+                    reportDto.setArtistName(report.acquireArtist().getName());
+                    return reportDto;
+                    })
                 .collect(Collectors.toList());
         return reportDtos;
     }

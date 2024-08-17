@@ -5,5 +5,7 @@ place : string;
 title : string;
 text : string;
 userName : string;
-userEmail : string
+userEmail : string;
+artistId : number | undefined;
+artistName : string | undefined 
 }

@@ -163,11 +163,11 @@ export const ReportPage = () => {
             <Text color = 'tomato'>{errors.newText?.message}</Text>
           </FormControl>
           <HStack spacing={100}>
-            <Button
+          <Button
               colorScheme="facebook"
               leftIcon={<ArrowBackIcon />}
               onClick={() => {
-                navigate(`/artist/${numberArtistId}`);
+                navigate(-1);
               }}
             >
               戻る

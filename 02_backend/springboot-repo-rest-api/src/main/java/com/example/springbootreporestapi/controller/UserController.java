@@ -2,6 +2,7 @@ package com.example.springbootreporestapi.controller;
 
 import com.example.springbootreporestapi.entity.User;
 import com.example.springbootreporestapi.payload.UserDto;
+import com.example.springbootreporestapi.payload.UserUpdateDto;
 import com.example.springbootreporestapi.service.UserService;
 import org.springframework.aop.target.LazyInitTargetSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{userId}")
     public ResponseEntity<UserDto> getUserById(@PathVariable (name = "userId") Long userId){
         return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
@@ -42,11 +43,11 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUser(
+    public ResponseEntity<UserUpdateDto> updateUser(
             @PathVariable(name = "userId") Long id,
-            @RequestBody UserDto userDto
+            @RequestBody UserUpdateDto userUpdateDto
     ){
-        return new ResponseEntity<>(userService.updateUser(id, userDto), HttpStatus.OK);
+        return new ResponseEntity<>(userService.updateUser(id, userUpdateDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")

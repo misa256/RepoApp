@@ -13,4 +13,6 @@ public class ReportDto {
     private String text;
     private String userName;
     private String userEmail;
+    private long artistId;
+    private String artistName;
 }
